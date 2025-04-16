@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/script.js" defer></script>
+    <link rel="stylesheet" href="/style.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="calculator">
+        <div class="fenetre"></div>
+        <div class="buttons">
+          <button class="clear" onclick="effacer()">C</button>
+          <button onclick="ajouter('%')">%</button>
+          <button class="operator" onclick="ajouter('/')">/</button>
+          <button class="operator" onclick="ajouter('*')">*</button>
+    
+          <button onclick="ajouter('7')">7</button>
+          <button onclick="ajouter('8')">8</button>
+          <button onclick="ajouter('9')">9</button>
+          <button class="operator" onclick="ajouter('-')">−</button>
+    
+          <button onclick="ajouter('4')">4</button>
+          <button onclick="ajouter('5')">5</button>
+          <button onclick="ajouter('6')">6</button>
+          <button class="operator" onclick="ajouter('+')">+</button>
+    
+          <button onclick="ajouter('1')">1</button>
+          <button onclick="ajouter('2')">2</button>
+          <button onclick="ajouter('3')">3</button>
+          <button class="equals" onclick="calculer()">=</button>
+    
+          <button onclick="ajouter('0')">0</button>
+          <button onclick="ajouter('.')">.</button>
+        </div>
+      </div>
+</body>
+</html>
