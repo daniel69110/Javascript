@@ -37,12 +37,15 @@ button {
   border-radius: 8px;
   font-size: 16px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  
 }
 
-button:hover {
-  background-color: #1d242d;
+.dark-mode {
+  background-color: #121212;
+  color: white;
 }
+
+
 
 th,
 td {

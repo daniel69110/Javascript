@@ -11,6 +11,23 @@ let form = document.querySelector("form");
 
 let liste = [];
 
+let darkBg = document.querySelector("#dark--bg")
+darkBg.addEventListener("click", function () {
+  document.body.classList.toggle("dark-mode");
+});
+
+let buttons = document.querySelectorAll("button");
+
+buttons.forEach(function (button) {
+  button.addEventListener("mouseover", function () {
+    button.style.background = 'green';
+  });
+
+  button.addEventListener("mouseout", function () {
+    button.style.background = '';
+  });
+});
+
 const appointmentList = document.querySelector("#appointmentList");
 
 form.addEventListener("submit", function (event) {
