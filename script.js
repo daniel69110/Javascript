@@ -1,54 +1,90 @@
-let valeurs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, null];
+let nameInput = document.querySelector("#user_name");
+let nameError = document.querySelector("#name_error");
 
-let grille = document.querySelector(".grid-container");
+let timeRdv = document.querySelector("#heure_rdv");
+let timeError = document.querySelector("#time_error");
 
-function afficherGrille() {
-  grille.innerHTML = ''; // Effacer la grille actuelle
-  valeurs.forEach((val, index) => {
-    const div = document.createElement('div');
-    div.textContent = val ?? ''; // Si null, afficher vide
-    div.classList.add('case');
-    div.addEventListener('click', () => deplacerCase(index)); // Ajouter un clic sur chaque case
-    grille.appendChild(div);
-  });
-}
+let participant = document.querySelector("#nb_part");
+let nbError = document.querySelector("#nb_error");
 
-function deplacerCase(index) {
-  const indexVide = valeurs.indexOf(null); // Index de la case vide
+let form = document.querySelector("form");
 
-  console.log('Case vide à la position :', indexVide);
-  console.log('Tu as cliqué sur la case :', index);
+let liste = [];
 
-  const rows = 4; // Grille 4x4
+const appointmentList = document.querySelector("#appointmentList");
 
-  // Déterminer les indices voisins (haut, bas, gauche, droite)
-  const voisins = [
-    index - 1,  // gauche
-    index + 1,  // droite
-    index - rows,  // haut
-    index + rows   // bas
-  ];
+form.addEventListener("submit", function (event) {
+  let valid = true;
 
-  // Vérifie si la case cliquée est voisine de la case vide
-  if (voisins.includes(indexVide)) {
-    // Si oui, on échange les valeurs
-    [valeurs[index], valeurs[indexVide]] = [valeurs[indexVide], valeurs[index]];
-
-    // Mettre à jour la grille après avoir échangé les cases
-    afficherGrille();
+  // Vérification du nom
+  const nom = nameInput.value.trim();
+  const regex = /^[a-zA-Z]+$/;
+  if (nom.length < 3 || !regex.test(nom)) {
+    nameInput.style.borderColor = 'red';
+    nameError.hidden = false;
+    valid = false;
+  } else {
+    nameInput.style.borderColor = 'green';
+    nameError.hidden = true;
   }
-}
 
-function melanger() {
-    // Mélange les valeurs en utilisant l'algorithme de Fisher-Yates
-    for (let i = valeurs.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1)); // Choisir un indice aléatoire entre 0 et i
-      [valeurs[i], valeurs[j]] = [valeurs[j], valeurs[i]]; // Échanger les valeurs
-    }
-  
-    // Réafficher la grille après le mélange
-    afficherGrille();
-}
-  
+  // Vérification de l'heure
+  const heure = timeRdv.value;
+  const [h, m] = heure.split(':').map(Number);
+  if (isNaN(h) || h < 9 || h >= 18) {
+    timeRdv.style.borderColor = 'red';
+    timeError.hidden = false;
+    valid = false;
+  } else {
+    timeRdv.style.borderColor = 'green';
+    timeError.hidden = true;
+  }
 
-afficherGrille(); // Initialiser et afficher la grille
+  // Vérification du nombre de participants
+  const nb = parseInt(participant.value);
+  if (isNaN(nb) || nb <= 0 || nb > 10) {
+    participant.style.borderColor = 'red';
+    nbError.hidden = false;
+    valid = false;
+  } else {
+    participant.style.borderColor = 'green';
+    nbError.hidden = true;
+  }
+
+  // Bloquer la soumission si non valide
+  if (!valid) {
+    event.preventDefault();
+    return;
+  }
+
+  // Création de l'objet rendez-vous avec les informations récupérées
+  const rdv = {
+    nom: nom,
+    date: document.querySelector("#date_rdv").value,  // Récupérer la date
+    heure: heure,
+    participants: nb
+  };
+
+  // Ajout au tableau liste
+  liste.push(rdv);
+
+  // Affichage du tableau en console
+  console.log("Liste des rendez-vous :", liste);
+
+  // Création d'une nouvelle ligne à ajouter dans le tableau HTML
+  const row = `<tr>
+    <td>${rdv.nom}</td>
+    <td>${rdv.date}</td>
+    <td>${rdv.heure}</td>
+    <td>${rdv.participants}</td>
+  </tr>`;
+
+  // Ajouter la ligne au tableau HTML
+  appointmentList.innerHTML += row;
+
+  // Réinitialiser le formulaire après soumission
+  form.reset();
+
+  // Empêcher la soumission classique
+  event.preventDefault();
+});
