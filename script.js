@@ -1,16 +1,3 @@
-let nameInput = document.querySelector("#user_name");
-let nameError = document.querySelector("#name_error");
-
-let timeRdv = document.querySelector("#heure_rdv");
-let timeError = document.querySelector("#time_error");
-
-let participant = document.querySelector("#nb_part");
-let nbError = document.querySelector("#nb_error");
-
-let form = document.querySelector("form");
-
-let liste = [];
-
 let darkBg = document.querySelector("#dark--bg")
 darkBg.addEventListener("click", function () {
   document.body.classList.toggle("dark-mode");
@@ -28,80 +15,40 @@ buttons.forEach(function (button) {
   });
 });
 
-const appointmentList = document.querySelector("#appointmentList");
+let btns = document.querySelector("#btn-search")
+btns.addEventListener("click", async function (searchPokemon) {
+  const input = document.getElementById('searchInput').value.trim().toLowerCase();
+  if (!input) return alert('Entre un nom ou un ID');
 
-form.addEventListener("submit", function (event) {
-  let valid = true;
-
-  // Vérification du nom
-  const nom = nameInput.value.trim();
-  const regex = /^[a-zA-Z]+$/;
-  if (nom.length < 3 || !regex.test(nom)) {
-    nameInput.style.borderColor = 'red';
-    nameError.hidden = false;
-    valid = false;
-  } else {
-    nameInput.style.borderColor = 'green';
-    nameError.hidden = true;
+  try {
+    const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${input}`);
+    if (!res.ok) throw new Error('Pokémon non trouvé');
+  
+    const data = await res.json();
+    displayPokemonInfo(data);
+  } catch (error) {
+    document.getElementById('pokemonInfo').innerHTML = `<p style="color:red;">${error.message}</p>`;
   }
-
-  // Vérification de l'heure
-  const heure = timeRdv.value;
-  const [h, m] = heure.split(':').map(Number);
-  if (isNaN(h) || h < 9 || h >= 18) {
-    timeRdv.style.borderColor = 'red';
-    timeError.hidden = false;
-    valid = false;
-  } else {
-    timeRdv.style.borderColor = 'green';
-    timeError.hidden = true;
-  }
-
-  // Vérification du nombre de participants
-  const nb = parseInt(participant.value);
-  if (isNaN(nb) || nb <= 0 || nb > 10) {
-    participant.style.borderColor = 'red';
-    nbError.hidden = false;
-    valid = false;
-  } else {
-    participant.style.borderColor = 'green';
-    nbError.hidden = true;
-  }
-
-  // Bloquer la soumission si non valide
-  if (!valid) {
-    event.preventDefault();
-    return;
-  }
-
-  // Création de l'objet rendez-vous avec les informations récupérées
-  const rdv = {
-    nom: nom,
-    date: document.querySelector("#date_rdv").value,  // Récupérer la date
-    heure: heure,
-    participants: nb
-  };
-
-  // Ajout au tableau liste
-  liste.push(rdv);
-
-  // Affichage du tableau en console
-  console.log("Liste des rendez-vous :", liste);
-
-  // Création d'une nouvelle ligne à ajouter dans le tableau HTML
-  const row = `<tr>
-    <td>${rdv.nom}</td>
-    <td>${rdv.date}</td>
-    <td>${rdv.heure}</td>
-    <td>${rdv.participants}</td>
-  </tr>`;
-
-  // Ajouter la ligne au tableau HTML
-  appointmentList.innerHTML += row;
-
-  // Réinitialiser le formulaire après soumission
-  form.reset();
-
-  // Empêcher la soumission classique
-  event.preventDefault();
 });
+
+function displayPokemonInfo(pokemon) {
+  const types = pokemon.types.map(t => t.type.name).join(', ');
+  const abilities = pokemon.abilities.map(a => a.ability.name).join(', ');
+
+  document.getElementById('pokemonInfo').innerHTML = `
+    <h2>${pokemon.name} (id:${pokemon.id})</h2>
+    <img src="${pokemon.sprites.front_default}" alt="${pokemon.name}">
+    <p><strong>Taille:</strong> ${pokemon.height / 10} m</p>
+    <p><strong>Poids:</strong> ${pokemon.weight / 10} kg</p>
+    <p><strong>Types:</strong> ${types}</p>
+    <p><strong>Capacités:</strong> ${abilities}</p>
+  `;
+}
+
+// const BASE_URL = "https://pokeapi.co/api/v2/"
+
+// async function getPokemonByName (name){
+//   const response = await fetch(BASE_URL+"pokemon/"+name)
+//   const data = await response.json();
+//   return data
+// }

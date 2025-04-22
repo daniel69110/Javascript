@@ -4,48 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="/script.js" defer></script>
+    <script type="module" src="/script.js" defer></script>
     <link rel="stylesheet" href="/style.css">
     <title>Réservation de Rendez-vous</title>
 </head>
 
-<body>  
+<body>
     <button id="dark--bg">Sombre</button>
-    
-    <form>
-        <div>
-            <label for="user_name">Nom du client :</label>
-            <p id="name_error" hidden>Le nom doit contenir au moins 3 lettres et uniquement des lettres.</p>
-            <input type="text" id="user_name" name="name">
-        </div>
-        <div>
-            <label for="date_rdv">Date de rendez-vous :</label>
-            <input type="date" id="date_rdv" name="date">
-        </div>
-        <div>
-            <label for="heure_rdv">Heure de rendez-vous :</label>
-            <p id="time_error" hidden>Les rendez-vous sont disponibles uniquement entre 9h00 et 18h00.</p>
-            <input type="time" id="heure_rdv" name="time">
-        </div>
-        <div>
-            <label for="nb_part">Nombre de participants :</label>
-            <p id="nb_error" hidden>Le nombre de participants doit être entre 1 et 10.</p>
-            <input type="number" id="nb_part" name="nbParticipant">
-        </div>
-        <button type="submit">Envoyer</button>
-    </form>
 
-    <table id="appointmentTable">
-        <thead>
-            <tr>
-                <th>Nom</th>
-                <th>Date</th>
-                <th>Heure</th>
-                <th>Participants</th>
-            </tr>
-        </thead>
-        <tbody id="appointmentList"></tbody>
-    </table>
+    <div class="container">
+        <h1>Mini Pokédex</h1>
+
+        <input type="text" id="searchInput" placeholder="Nom ou ID du Pokémon">
+        <button id="btn-search">Rechercher</button>
+
+        <div id="pokemonInfo"></div>
+    </div>
 </body>
 
 </html>
