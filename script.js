@@ -1,54 +1,107 @@
-let darkBg = document.querySelector("#dark--bg")
-darkBg.addEventListener("click", function () {
-  document.body.classList.toggle("dark-mode");
+const word = ["chien", "table", "piano", "plage", "fleur"];
+const randWord = word[Math.floor(Math.random() * word.length)].toLowerCase();
+console.log("Mot à deviner :", randWord);
+
+const alphabetAZERTY = "AZERTYUIOPQSDFGHJKLMWXCVBN".split('');
+const keyboard = document.getElementById('keyboard');
+const grid = document.getElementById('grid');
+const submitBtn = document.getElementById('submitBtn');
+
+let currentAttempt = 0; // ligne actuelle (0 à 5)
+let currentLetters = []; // lettres de la tentative en cours
+const maxAttempts = 6;
+const wordLength = 5;
+
+/** GÉNÈRE UNE GRILLE DE 6 LIGNES X 5 COLONNES */
+function generateGrid() {
+  for (let i = 0; i < maxAttempts * wordLength; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'cell';
+    grid.appendChild(cell);
+  }
+}
+generateGrid();
+
+/** MISE À JOUR DES CASES POUR LA LIGNE ACTUELLE */
+function updateGrid() {
+  const start = currentAttempt * wordLength;
+  for (let i = 0; i < wordLength; i++) {
+    const cell = grid.children[start + i];
+    cell.textContent = currentLetters[i] || '';
+  }
+}
+
+/** AJOUT DES TOUCHES DU CLAVIER */
+alphabetAZERTY.forEach(letter => {
+  const btn = document.createElement('button');
+  btn.className = 'key';
+  btn.textContent = letter;
+  btn.addEventListener('click', () => {
+    if (currentLetters.length < wordLength) {
+      currentLetters.push(letter.toLowerCase());
+      updateGrid();
+    }
+  });
+  keyboard.appendChild(btn);
 });
 
-let buttons = document.querySelectorAll("button");
+/** BOUTON DE VALIDATION */
+submitBtn.addEventListener('click', () => {
+  if (currentLetters.length < wordLength) {
+    alert("Tapez un mot de 5 lettres !");
+    return;
+  }
 
-buttons.forEach(function (button) {
-  button.addEventListener("mouseover", function () {
-    button.style.background = 'green';
-  });
+  const motSaisi = currentLetters.join('');
+  const start = currentAttempt * wordLength;
 
-  button.addEventListener("mouseout", function () {
-    button.style.background = '';
-  });
-});
+  // Dupliquer le mot aléatoire pour vérif des jaunes
+  const lettresRestantes = randWord.split('');
 
-let btns = document.querySelector("#btn-search")
-btns.addEventListener("click", async function (searchPokemon) {
-  const input = document.getElementById('searchInput').value.trim().toLowerCase();
-  if (!input) return alert('Entre un nom ou un ID');
+  // Étape 1 : marquage en vert
+  for (let i = 0; i < wordLength; i++) {
+    const cell = grid.children[start + i];
+    const lettre = currentLetters[i];
 
-  try {
-    const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${input}`);
-    if (!res.ok) throw new Error('Pokémon non trouvé');
-  
-    const data = await res.json();
-    displayPokemonInfo(data);
-  } catch (error) {
-    document.getElementById('pokemonInfo').innerHTML = `<p style="color:red;">${error.message}</p>`;
+    if (lettre === randWord[i]) {
+      cell.classList.add('correct'); // vert
+      lettresRestantes[i] = null; // on neutralise la lettre utilisée
+    }
+  }
+
+  // Étape 2 : marquage en jaune ou gris
+  for (let i = 0; i < wordLength; i++) {
+    const cell = grid.children[start + i];
+    const lettre = currentLetters[i];
+
+    if (lettre !== randWord[i]) {
+      if (lettresRestantes.includes(lettre)) {
+        cell.classList.add('present'); // jaune
+        lettresRestantes[lettresRestantes.indexOf(lettre)] = null;
+      } else {
+        cell.classList.add('absent'); // gris
+      }
+    }
+  }
+
+  if (motSaisi === randWord) {
+    setTimeout(() => alert("🎉 Bravo, vous avez deviné le mot !"), 100);
+  } else {
+    currentAttempt++;
+    currentLetters = [];
+
+    if (currentAttempt === maxAttempts) {
+      setTimeout(() => alert(`💀 Le mot était : ${randWord}`), 100);
+    }
   }
 });
 
-function displayPokemonInfo(pokemon) {
-  const types = pokemon.types.map(t => t.type.name).join(', ');
-  const abilities = pokemon.abilities.map(a => a.ability.name).join(', ');
-
-  document.getElementById('pokemonInfo').innerHTML = `
-    <h2>${pokemon.name} (id:${pokemon.id})</h2>
-    <img src="${pokemon.sprites.front_default}" alt="${pokemon.name}">
-    <p><strong>Taille:</strong> ${pokemon.height / 10} m</p>
-    <p><strong>Poids:</strong> ${pokemon.weight / 10} kg</p>
-    <p><strong>Types:</strong> ${types}</p>
-    <p><strong>Capacités:</strong> ${abilities}</p>
-  `;
-}
-
-// const BASE_URL = "https://pokeapi.co/api/v2/"
-
-// async function getPokemonByName (name){
-//   const response = await fetch(BASE_URL+"pokemon/"+name)
-//   const data = await response.json();
-//   return data
-// }
+/** BOUTON SUPPRIMER */
+const resetBtn = document.createElement('button');
+resetBtn.className = 'key btn-supp';
+resetBtn.textContent = 'Supp';
+resetBtn.addEventListener('click', () => {
+  currentLetters.pop(); // Supprime la dernière lettre
+  updateGrid();
+});
+keyboard.appendChild(resetBtn);

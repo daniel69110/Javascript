@@ -1,84 +1,91 @@
-form {
+.keyboard {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 8px;
   max-width: 500px;
   margin: 40px auto;
-  padding: 20px;
-  background-color: #f2f6f9;
-  border: 1px solid #ccc;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  font-family: Arial, sans-serif;
 }
 
-form div {
-  margin-bottom: 15px;
-}
-
-label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-  color: #293041;
-}
-
-input {
-  width: 100%;
+.key {
   padding: 10px;
-  border: 1px solid #ccd;
-  border-radius: 8px;
-  font-size: 16px;
-  box-sizing: border-box;
-}
-
-button {
-  background-color: #293041;
-  color: white;
-  padding: 12px 18px;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  cursor: pointer;
-  
-}
-
-.dark-mode {
-  background-color: #121212;
-  color: white;
-}
-
-
-
-th,
-td {
-  border: 1px solid rgb(160 160 160);
-  padding: 8px 10px;
-}
-
-th[scope="col"] {
-  background-color: #505050;
-  color: #fff;
-}
-
-th[scope="row"] {
-  background-color: #d6ecd4;
-}
-
-td {
-  text-align: center;
-}
-
-tr:nth-of-type(even) {
+  font-size: 18px;
   background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+  text-transform: uppercase;
 }
 
-table {
-  border-collapse: collapse;
-  border: 2px solid rgb(140 140 140);
-  font-family: sans-serif;
-  font-size: 0.8rem;
-  letter-spacing: 1px;
+.key:hover {
+  background-color: #ccc;
 }
 
-caption {
-  caption-side: bottom;
-  padding: 10px;
+#output {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 24px;
+  letter-spacing: 5px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, 60px);
+  grid-template-rows: repeat(5, 60px);
+  gap: 8px;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.cell {
+  width: 60px;
+  height: 60px;
+  border: 2px solid #ccc;
+  font-size: 24px;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 60px;
+  background-color: white;
+  font-weight: bold;
+}
+
+.submit-btn {
+  padding: 10px 20px;
+  font-size: 18px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.submit-btn:hover {
+  background-color: #45a049;
+}
+
+.btn-supp{
+  background: #da3939;
+
+}
+
+.btn-supp:hover{
+  background: #b31313;
+
+}
+
+.correct {
+  background-color: #6aaa64; /* vert */
+  color: white;
+}
+.present {
+  background-color: #c9b458; /* jaune */
+  color: white;
+}
+.absent {
+  background-color: #787c7e; /* gris */
+  color: white;
 }
