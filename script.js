@@ -12,7 +12,7 @@ let currentLetters = [];
 const maxAttempts = 6;
 const wordLength = 5;
 
-/** GÉNÈRE UNE GRILLE DE 6 LIGNES X 5 COLONNES */
+/**GRILLE */
 function generateGrid() {
     for (let i = 0; i < maxAttempts * wordLength; i++) {
         const cell = document.createElement('div');
