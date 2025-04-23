@@ -7,8 +7,8 @@ const keyboard = document.getElementById('keyboard');
 const grid = document.getElementById('grid');
 const submitBtn = document.getElementById('submitBtn');
 
-let currentAttempt = 0; // ligne actuelle (0 à 5)
-let currentLetters = []; // lettres de la tentative en cours
+let currentAttempt = 0;
+let currentLetters = [];
 const maxAttempts = 6;
 const wordLength = 5;
 
@@ -55,7 +55,7 @@ submitBtn.addEventListener('click', () => {
   const motSaisi = currentLetters.join('');
   const start = currentAttempt * wordLength;
 
-  // Dupliquer le mot aléatoire pour vérif des jaunes
+
   const lettresRestantes = randWord.split('');
 
   // Étape 1 : marquage en vert
@@ -64,22 +64,22 @@ submitBtn.addEventListener('click', () => {
     const lettre = currentLetters[i];
 
     if (lettre === randWord[i]) {
-      cell.classList.add('correct'); // vert
-      lettresRestantes[i] = null; // on neutralise la lettre utilisée
+      cell.classList.add('correct');
+      lettresRestantes[i] = null;
     }
   }
 
-  // Étape 2 : marquage en jaune ou gris
+  
   for (let i = 0; i < wordLength; i++) {
     const cell = grid.children[start + i];
     const lettre = currentLetters[i];
 
     if (lettre !== randWord[i]) {
       if (lettresRestantes.includes(lettre)) {
-        cell.classList.add('present'); // jaune
+        cell.classList.add('present');
         lettresRestantes[lettresRestantes.indexOf(lettre)] = null;
       } else {
-        cell.classList.add('absent'); // gris
+        cell.classList.add('absent');
       }
     }
   }
@@ -101,7 +101,7 @@ const resetBtn = document.createElement('button');
 resetBtn.className = 'key btn-supp';
 resetBtn.textContent = 'Supp';
 resetBtn.addEventListener('click', () => {
-  currentLetters.pop(); // Supprime la dernière lettre
+  currentLetters.pop();
   updateGrid();
 });
 keyboard.appendChild(resetBtn);
