@@ -85,13 +85,13 @@ submitBtn.addEventListener('click', () => {
     }
 
     if (motSaisi === randWord) {
-        setTimeout(() => alert("🎉 Bravo, vous avez deviné le mot !"), 100);
+        setTimeout(() => alert("Bravo, vous avez deviné le mot !"), 100);
     } else {
         currentAttempt++;
         currentLetters = [];
 
         if (currentAttempt === maxAttempts) {
-            setTimeout(() => alert(`💀 Le mot était : ${randWord}`), 100);
+            setTimeout(() => alert(`Le mot était : ${randWord}`), 100);
         }
     }
 });
