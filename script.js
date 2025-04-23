@@ -14,86 +14,86 @@ const wordLength = 5;
 
 /** GÉNÈRE UNE GRILLE DE 6 LIGNES X 5 COLONNES */
 function generateGrid() {
-  for (let i = 0; i < maxAttempts * wordLength; i++) {
-    const cell = document.createElement('div');
-    cell.className = 'cell';
-    grid.appendChild(cell);
-  }
+    for (let i = 0; i < maxAttempts * wordLength; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        grid.appendChild(cell);
+    }
 }
 generateGrid();
 
 /** MISE À JOUR DES CASES POUR LA LIGNE ACTUELLE */
 function updateGrid() {
-  const start = currentAttempt * wordLength;
-  for (let i = 0; i < wordLength; i++) {
-    const cell = grid.children[start + i];
-    cell.textContent = currentLetters[i] || '';
-  }
+    const start = currentAttempt * wordLength;
+    for (let i = 0; i < wordLength; i++) {
+        const cell = grid.children[start + i];
+        cell.textContent = currentLetters[i] || '';
+    }
 }
 
 /** AJOUT DES TOUCHES DU CLAVIER */
 alphabetAZERTY.forEach(letter => {
-  const btn = document.createElement('button');
-  btn.className = 'key';
-  btn.textContent = letter;
-  btn.addEventListener('click', () => {
-    if (currentLetters.length < wordLength) {
-      currentLetters.push(letter.toLowerCase());
-      updateGrid();
-    }
-  });
-  keyboard.appendChild(btn);
+    const btn = document.createElement('button');
+    btn.className = 'key';
+    btn.textContent = letter;
+    btn.addEventListener('click', () => {
+        if (currentLetters.length < wordLength) {
+            currentLetters.push(letter.toLowerCase());
+            updateGrid();
+        }
+    });
+    keyboard.appendChild(btn);
 });
 
-/** BOUTON DE VALIDATION */
+
 submitBtn.addEventListener('click', () => {
-  if (currentLetters.length < wordLength) {
-    alert("Tapez un mot de 5 lettres !");
-    return;
-  }
-
-  const motSaisi = currentLetters.join('');
-  const start = currentAttempt * wordLength;
-
-
-  const lettresRestantes = randWord.split('');
-
-  // Étape 1 : marquage en vert
-  for (let i = 0; i < wordLength; i++) {
-    const cell = grid.children[start + i];
-    const lettre = currentLetters[i];
-
-    if (lettre === randWord[i]) {
-      cell.classList.add('correct');
-      lettresRestantes[i] = null;
+    if (currentLetters.length < wordLength) {
+        alert("Tapez un mot de 5 lettres !");
+        return;
     }
-  }
 
-  
-  for (let i = 0; i < wordLength; i++) {
-    const cell = grid.children[start + i];
-    const lettre = currentLetters[i];
+    const motSaisi = currentLetters.join('');
+    const start = currentAttempt * wordLength;
 
-    if (lettre !== randWord[i]) {
-      if (lettresRestantes.includes(lettre)) {
-        cell.classList.add('present');
-        lettresRestantes[lettresRestantes.indexOf(lettre)] = null;
-      } else {
-        cell.classList.add('absent');
-      }
+
+    const lettresRestantes = randWord.split('');
+
+
+    for (let i = 0; i < wordLength; i++) {
+        const cell = grid.children[start + i];
+        const lettre = currentLetters[i];
+
+        if (lettre === randWord[i]) {
+            cell.classList.add('correct');
+            lettresRestantes[i] = null;
+        }
     }
-  }
 
-  if (motSaisi === randWord) {
-    setTimeout(() => alert("🎉 Bravo, vous avez deviné le mot !"), 100);
-  } else {
-    currentAttempt++;
-    currentLetters = [];
 
-    if (currentAttempt === maxAttempts) {
-      setTimeout(() => alert(`💀 Le mot était : ${randWord}`), 100);
+    for (let i = 0; i < wordLength; i++) {
+        const cell = grid.children[start + i];
+        const lettre = currentLetters[i];
+
+        if (lettre !== randWord[i]) {
+            if (lettresRestantes.includes(lettre)) {
+                cell.classList.add('present');
+                lettresRestantes[lettresRestantes.indexOf(lettre)] = null;
+            } else {
+                cell.classList.add('absent');
+            }
+        }
     }
-  }
+
+    if (motSaisi === randWord) {
+        setTimeout(() => alert("🎉 Bravo, vous avez deviné le mot !"), 100);
+    } else {
+        currentAttempt++;
+        currentLetters = [];
+
+        if (currentAttempt === maxAttempts) {
+            setTimeout(() => alert(`💀 Le mot était : ${randWord}`), 100);
+        }
+    }
 });
 
 /** BOUTON SUPPRIMER */
@@ -101,7 +101,7 @@ const resetBtn = document.createElement('button');
 resetBtn.className = 'key btn-supp';
 resetBtn.textContent = 'Supp';
 resetBtn.addEventListener('click', () => {
-  currentLetters.pop();
-  updateGrid();
+    currentLetters.pop();
+    updateGrid();
 });
 keyboard.appendChild(resetBtn);
